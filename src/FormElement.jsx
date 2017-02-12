@@ -1,9 +1,9 @@
-import { h, Component } from 'preact';
+import React, { PropTypes } from 'react';
 
 import { bindAll, startCase } from 'lowline';
 
-export default class FormElement extends Component {
-  constructor(props) {
+class FormElement extends React.Component {
+  constructor(props = {}) {
     super(props);
 
     bindAll(this, ['reset', 'validate', 'onChange', 'onBlur', 'onFocus']);
@@ -118,3 +118,11 @@ export default class FormElement extends Component {
     this.setValue(initialAttributes[this.props.name], !hasInitialProps);
   }
 }
+
+FormElement.contextTypes = {
+  initialAttributes: PropTypes.object,
+  setAttribute: PropTypes.func,
+  registerInput: PropTypes.func,
+};
+
+export default FormElement;

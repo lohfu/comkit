@@ -1,11 +1,15 @@
-import { h, Component } from 'preact';
+import React, { PropTypes } from 'react';
 
+import classNames from 'classnames';
 import { omit } from 'lowline';
 
 import FormElement from './FormElement';
 
 export default class Input extends FormElement {
-  render({ required, type = 'text', disabled, placeholder }, state = {}, context) {
+  render() {
+    const { required, type = 'text', disabled, placeholder } = this.props;
+    const state = this.state;
+
     const classes = Object.assign({
       'field-container': true,
       cell: true,
@@ -19,7 +23,7 @@ export default class Input extends FormElement {
     });
 
     return (
-      <div class={classes}>
+      <div className={classNames(classes)}>
         <label className="placeholder">{placeholder}</label>
         <input
           disabled={disabled}
@@ -30,10 +34,10 @@ export default class Input extends FormElement {
           placeholder={placeholder}
           ref={(input) => { this.input = input; }}
           type={type}
-          value={state.value}
+          value={state.value || undefined}
         />
-        <label class="icon" />
-        {state.error && <label class="error">{state.error}</label>}
+        <label className="icon" />
+        {state.error && <label className="error">{state.error}</label>}
       </div>
     );
   }

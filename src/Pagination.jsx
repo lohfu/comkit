@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import React, { PropTypes } from 'react';
 import { omit } from 'lowline';
 
 import qs from 'mini-qs'

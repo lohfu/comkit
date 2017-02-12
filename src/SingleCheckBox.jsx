@@ -1,9 +1,14 @@
-import { h } from 'preact';
+import React, { PropTypes } from 'react';
+
+import classNames from 'classnames';
 
 import FormElement from './FormElement';
 
 export default class SingleCheckBox extends FormElement {
-  render({ type = 'text', name, disabled, title }, state = {}) {
+  render() {
+    const { type = 'text', name, disabled, title } = this.props;
+    const state = this.state;
+
     const classes = Object.assign({
       cell: true,
       'field-container': true,
@@ -16,8 +21,8 @@ export default class SingleCheckBox extends FormElement {
     });
 
     return (
-      <div class={classes}>
-        <label class="checkbox">
+      <div className={classNames(classes)}>
+        <label className="checkbox">
           <input
             name={name}
             disabled={disabled}
@@ -30,8 +35,8 @@ export default class SingleCheckBox extends FormElement {
           />
           <i></i>
           <span>{title}</span>
-          {state.error && <label class="error">{state.error}</label>}
-          <label class="icon" />
+          {state.error && <label className="error">{state.error}</label>}
+          <label className="icon" />
         </label>
       </div>
     );

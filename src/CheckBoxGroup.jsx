@@ -1,10 +1,12 @@
-import { h, Component } from 'preact';
+import React, { PropTypes } from 'react';
+
+import classNames from 'classnames';
 
 import { omit } from 'lowline';
 
 import FormElement from './FormElement';
 
-export default class CheckBoxGroup extends FormElement {
+class CheckBoxGroup extends FormElement {
   constructor(props, ...args) {
     if (typeof props.values[0] === 'object' && !props.idAttribute) {
       throw new Error('Object arrays need idAttribute');
@@ -85,7 +87,10 @@ export default class CheckBoxGroup extends FormElement {
     };
   }
 
-  render({ type = 'text', disabled, children, placeholder, values, value, idProp, nameProp }, state = {}, context) {
+  render() {
+    const { type = 'text', disabled, children, placeholder, values, value, idProp, nameProp } = this.props;
+    const state = this.state;
+
     const classes = Object.assign({
       'field-container': true,
       'checkbox-group': true,
@@ -97,11 +102,17 @@ export default class CheckBoxGroup extends FormElement {
     });
 
     return (
-      <div class={classes}>
+      <div className={classNames(classes)}>
         {children}
-        <label class="icon" />
-        {state.error && <label class="error">{state.error}</label>}
+        <label className="icon" />
+        {state.error && <label className="error">{state.error}</label>}
       </div>
     );
   }
 }
+
+CheckBoxGroup.childContextTypes = {
+  group: React.PropTypes.object,
+};
+
+export default CheckBoxGroup;

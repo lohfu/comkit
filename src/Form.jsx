@@ -1,15 +1,12 @@
-import { h, Component } from 'preact';
+import React, { PropTypes } from 'react';
 
 // modules > lodas
-import set from 'set-value';
-import unset from 'unset-value';
-import get from 'get-value';
-import { omit, forEach, bindAll } from 'lowline';
+import { set, get, omit, forEach, bindAll } from 'lowline';
 
 // import Input from '../components/Input.jsx'
 import deepEqual from 'deep-equal';
 
-export default class Form extends Component {
+class Form extends React.Component {
   constructor(props) {
     super(props);
 
@@ -17,7 +14,13 @@ export default class Form extends Component {
 
     this.inputs = [];
 
-    this.componentWillReceiveProps(props);
+    this.attributes = props.user || this.initialAttributes || {};
+    this.initialAttributes = Object.assign({}, this.attributes);
+
+    this.state = {
+      dirty: false,
+      valid: this.validate(),
+    };
   }
 
   getChildContext() {
@@ -109,3 +112,11 @@ export default class Form extends Component {
     );
   }
 }
+
+Form.childContextTypes = {
+  initialAttributes: PropTypes.object,
+  setAttribute: PropTypes.func,
+  registerInput: PropTypes.func,
+};
+
+export default Form;

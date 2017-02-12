@@ -1,4 +1,4 @@
-import { h, Component } from 'preact';
+import React, { PropTypes } from 'react';
 
 import { omit } from 'lowline';
 
@@ -18,7 +18,10 @@ export default class TextArea extends FormElement {
     }
   }
 
-  render({ disabled, placeholder }, state = {}) {
+  render() {
+    const { disabled, placeholder } = this.props;
+    const state = this.state;
+
     const classes = Object.assign({
       'field-container': true,
       empty: !state.value,
