@@ -1,18 +1,7 @@
 {
   "extends": [
-    "airbnb-base"
+    "airbnb"
   ],
-
-  "env": {
-    "browser": true
-  },
-
-  "parserOptions": {
-    "ecmaFeatures": {
-      "modules": true,
-      "jsx": true
-    }
-  },
 
   "rules": {
     "arrow-parens": [2, "always"],
@@ -28,13 +17,5 @@
     "no-shadow": 0,
     "no-underscore-dangle": 0,
     "no-unused-vars": [0, { "varsIgnorePattern": "^h$" }]
-  },
-
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".json"]
-      }
-    }
   }
 }
