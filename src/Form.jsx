@@ -14,7 +14,7 @@ class Form extends React.Component {
 
     this.inputs = [];
 
-    this.attributes = props.user || this.initialAttributes || {};
+    this.attributes = props.attributes || {};
     this.initialAttributes = Object.assign({}, this.attributes);
 
     this.state = {
@@ -32,7 +32,7 @@ class Form extends React.Component {
   }
 
   componentWillReceiveProps(props = {}) {
-    this.resetAttributes(omit(props, 'children'));
+    this.resetAttributes(props.attributes);
   }
 
   registerInput(component) {
@@ -60,9 +60,9 @@ class Form extends React.Component {
   }
 
   setAttribute(attr, value) {
-    const filter = get(this.filters, attr);
+    // const filter = get(this.filters, attr);
 
-    if (filter) value = filter(value);
+    // if (filter) value = filter(value);
 
     set(this.attributes, attr, value);
 
@@ -87,6 +87,7 @@ class Form extends React.Component {
   }
 
   validate(focus = false, touch = false) {
+    // TODO maybe put this somewhere else
     if (touch) {
       this.inputs.forEach((input) => input.touch());
     }
