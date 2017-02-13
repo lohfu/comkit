@@ -66,9 +66,14 @@ class Form extends React.Component {
 
     set(this.attributes, attr, value);
 
-    this.setState({
-      dirty: !deepEqual(this.attributes, this.initialAttributes),
-      valid: this.validate(),
+    // skip a tick to let form element state update (if this.validate is called
+    // immediately, the child/form element component will not have updated it's
+    // state... ie the error field could be wrong
+    setTimeout(() => {
+      this.setState({
+        dirty: !deepEqual(this.attributes, this.initialAttributes),
+        valid: this.validate(),
+      });
     });
   }
 
