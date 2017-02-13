@@ -34,7 +34,7 @@ export default class Input extends FormElement {
           placeholder={placeholder}
           ref={(input) => { this.input = input; }}
           type={type}
-          value={state.value || undefined}
+          value={state.value || ''}
         />
         <label className="icon" />
         {state.error && <label className="error">{state.error}</label>}
