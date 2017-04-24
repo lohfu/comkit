@@ -1,10 +1,6 @@
 import React, { PropTypes } from 'react';
-
-// modules > lodas
-import { set, get, omit, forEach, bindAll } from 'lowline';
-
-// import Input from '../components/Input.jsx'
 import deepEqual from 'deep-equal';
+import { set, get, omit, forEach, bindAll } from 'lowline';
 
 class Form extends React.Component {
   constructor(props) {
