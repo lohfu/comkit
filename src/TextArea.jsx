@@ -11,6 +11,7 @@ export default class TextArea extends FormElement {
       touched: true,
     });
 
+    // TODO still needed?
     if (document.documentElement.dataset.browser === 'IE11') {
       // make text area behave like input in IE (input fires both
       // focus and input when focusing input elements, but not textareas)
@@ -19,28 +20,30 @@ export default class TextArea extends FormElement {
   }
 
   render() {
-    const { disabled, placeholder } = this.props;
+    const { disabled, name, placeholder } = this.props;
     const state = this.state;
 
-    const classes = Object.assign({
+    const classes = {
       'field-container': true,
+      cell: true,
       empty: !state.value,
-      filled: state.value,
+      filled: !!state.value,
+      dirty: state.dirty,
       focus: state.focus,
-      invalid: state.error,
+      invalid: !!state.error,
       touched: state.touched,
-      valid: state.value && !state.error,
-    });
+      valid: !state.error,
+    };
 
     return (
       <div class={classes}>
         <label className="placeholder">{placeholder}</label>
         <textarea
+          name={name}
           disabled={disabled}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
           onChange={this.onChange}
-          onInput={this.onChange}
           placeholder={placeholder}
           ref={(input) => (this.input = input)}
           value={state.value}

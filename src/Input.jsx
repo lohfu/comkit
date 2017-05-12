@@ -14,23 +14,23 @@ export default class Input extends FormElement {
       'field-container': true,
       cell: true,
       empty: !state.value,
-      filled: state.value,
+      filled: !!state.value,
       dirty: state.dirty,
       focus: state.focus,
-      invalid: state.error,
+      invalid: !!state.error,
       touched: state.touched,
-      valid: (!required || state.value) && !state.error,
+      valid: !state.error,
     });
 
     return (
       <div className={classNames(classes)}>
         <label className="placeholder">{placeholder}</label>
         <input
+          name={this.props.name}
           disabled={disabled}
           onBlur={this.onBlur}
           onChange={this.onChange}
           onFocus={this.onFocus}
-          onInput={this.onChange}
           placeholder={placeholder}
           ref={(input) => { this.input = input; }}
           type={type}

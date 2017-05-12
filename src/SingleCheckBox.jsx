@@ -29,7 +29,6 @@ export default class SingleCheckBox extends FormElement {
             onBlur={this.onBlur}
             onChange={this.onChange}
             onFocus={this.onFocus}
-            onInput={this.onChange}
             ref={(input) => { this.input = input; }}
             type="checkbox"
           />
