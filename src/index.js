@@ -1,5 +1,6 @@
 import CheckBoxGroup from './CheckBoxGroup';
 import CheckBox from './CheckBox';
+import ClassifiedForm from './ClassifiedForm';
 import FormElement from './FormElement';
 import Form from './Form';
 import Input from './Input';
@@ -11,6 +12,7 @@ import TextArea from './TextArea';
 export default {
   CheckBoxGroup,
   CheckBox,
+  ClassifiedForm,
   FormElement,
   Form,
   Input,
@@ -23,6 +25,7 @@ export default {
 export {
   CheckBoxGroup,
   CheckBox,
+  ClassifiedForm,
   FormElement,
   Form,
   Input,
