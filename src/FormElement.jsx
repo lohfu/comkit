@@ -1,12 +1,14 @@
 import React, { PropTypes } from 'react';
 
-import { bindAll, startCase } from 'lowline';
+import { bindAll } from 'lowline';
 
 class FormElement extends React.Component {
-  constructor(props = {}) {
-    super(props);
+  constructor(props = {}, ...args) {
+    super(props, ...args);
 
     bindAll(this, ['reset', 'validate', 'onChange', 'onBlur', 'onFocus']);
+
+    this.name = props.name;
 
     this.state = {
       dirty: false,
@@ -60,37 +62,68 @@ class FormElement extends React.Component {
     });
   }
 
-  isValid() {
-    return !this.state.error;
+  untouch() {
+    this.setState({
+      touched: false,
+    });
+  }
+
+  isValid(validate) {
+    let error;
+
+    if (validate) {
+      error = this.validate(this.state.value);
+
+      this.setState({
+        error,
+      });
+    } else {
+      error = this.state.error;
+    }
+
+    return !error;
+  }
+
+  isDirty() {
+    return this.state.dirty;
+  }
+
+  isTouched() {
+    return this.state.touched;
   }
 
   getValue() {
     return this.state.value;
   }
 
-  setValue(value, untouch = false) {
+  setValue(value, reset = false, silent = false) {
     if (value === '') {
       value = null;
     }
 
     this.setState({
-      dirty: value !== this.context.initialAttributes[this.props.name],
-      error: this.validate(value),
-      touched: !untouch,
+      dirty: value !== this.props.value,
+      error: !reset ? this.validate(value) : undefined,
+      touched: !reset,
       value,
     });
 
-    this.context.setAttribute(this.props.name, value);
+    if (!silent && this.context.onChange && value !== this.state.value) {
+      this.context.onChange();
+    }
   }
 
-  validate(value) {
+  validate(value = this.state && this.state.value) {
     const { required, tests = [] } = this.props;
 
     if (required) {
       if (value == null || value === '') {
+        // return Required error if no value is set
+        // will fall through otherwise
         return typeof required === 'string' ? required : 'Required';
       }
     } else if (value == null || value === '') {
+      // return undefined if not required and value not set
       return undefined;
     }
 
@@ -103,26 +136,14 @@ class FormElement extends React.Component {
     return undefined;
   }
 
-  reset() {
-    const initialAttributes = this.context.initialAttributes;
-
-    let hasInitialProps;
-
-    for (const prop in initialAttributes) {
-      if (initialAttributes[prop]) {
-        hasInitialProps = true;
-        break;
-      }
-    }
-
-    this.setValue(initialAttributes[this.props.name], !hasInitialProps);
+  reset(silent = false) {
+    this.setValue(this.props.value, true, silent);
   }
 }
 
 FormElement.contextTypes = {
-  initialAttributes: PropTypes.object,
-  setAttribute: PropTypes.func,
   registerInput: PropTypes.func,
+  onChange: PropTypes.func,
 };
 
 export default FormElement;
