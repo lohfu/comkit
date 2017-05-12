@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 
+import classNames from 'classnames';
 import { omit } from 'lowline';
 
 import FormElement from './FormElement';
@@ -36,7 +37,7 @@ export default class TextArea extends FormElement {
     };
 
     return (
-      <div class={classes}>
+      <div className={classNames(classes)}>
         <label className="placeholder">{placeholder}</label>
         <textarea
           name={name}
