@@ -1,28 +1,28 @@
-import React from 'react';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import classNames from 'classnames';
-import { omit } from 'lowline';
+import classNames from 'classnames'
 
-import FormElement from './FormElement';
+import FormField from './FormField'
 
-export default class TextArea extends FormElement {
-  onFocus(e) {
+class TextArea extends FormField {
+  onFocus (e) {
     this.setState({
       focus: true,
-      touched: true,
-    });
+      touched: true
+    })
 
     // TODO still needed?
-    if (document.documentElement.dataset.browser === 'IE11') {
+    if (document.documentField.dataset.browser === 'IE11') {
       // make text area behave like input in IE (input fires both
       // focus and input when focusing input elements, but not textareas)
-      this.setValue(e.target.value);
+      this.setValue(e.target.value)
     }
   }
 
-  render() {
-    const { disabled, name, placeholder } = this.props;
-    const state = this.state;
+  render () {
+    const { disabled, name, placeholder } = this.props
+    const state = this.state
 
     const classes = {
       'field-container': true,
@@ -33,12 +33,12 @@ export default class TextArea extends FormElement {
       focus: state.focus,
       invalid: !!state.error,
       touched: state.touched,
-      valid: !state.error,
-    };
+      valid: !state.error
+    }
 
     return (
       <div className={classNames(classes)}>
-        <label className="placeholder">{placeholder}</label>
+        <label className='placeholder'>{placeholder}</label>
         <textarea
           name={name}
           disabled={disabled}
@@ -49,9 +49,17 @@ export default class TextArea extends FormElement {
           ref={(input) => (this.input = input)}
           value={state.value}
         />
-        <label class="icon" />
-        {state.error && <label class="error">{state.error}</label>}
+        <label className='icon' />
+        {state.error && <label className='error'>{state.error}</label>}
       </div>
-    );
+    )
   }
 }
+
+TextArea.propTypes = {
+  disabled: PropTypes.bool,
+  name: PropTypes.string,
+  placeholder: PropTypes.string
+}
+
+export default TextArea

@@ -1,30 +1,45 @@
-import React, { PropTypes } from 'react';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import { omit } from 'lowline';
-
-import FormElement from './FormElement';
-
-const CheckBox = (props, context) => {
-  let { onChange, idAttribute, name, value } = context.group;
-
-  if (idAttribute && value) {
-    value = value.map((item) => item[idAttribute]);
+class Checkbox extends React.Component {
+  componentWillMount () {
+    if (!(this.context && this.context.checkboxGroup)) {
+      throw new Error('The `Checkbox` component must be used as a child of `CheckboxGroup`.')
+    }
   }
 
-  return (
-    <label className="checkbox">
-      <input
-        type="checkbox"
-        name={name}
-        checked={!!value && value.includes(props.value)}
-        value={props.value} onChange={onChange}
-      /><i /><span>{props.title}</span>
-    </label>
-  );
-};
+  render () {
+    console.log('render check box')
+    let { onChange, idAttribute, name, value } = this.context.checkboxGroup
 
-CheckBox.contextTypes = {
-  group: React.PropTypes.object,
-};
+    if (idAttribute && value) {
+      value = value.map((item) => item[idAttribute])
+    }
 
-export default CheckBox;
+    const checked = !!value && value.includes(this.props.value)
+    console.log(`${this.props.value}: ${checked}`)
+
+    return (
+      <label className='checkbox'>
+        <input
+          type='checkbox'
+          name={name}
+          checked={checked}
+          value={this.props.value}
+          onChange={onChange}
+        /><i /><span>{this.props.title}</span>
+      </label>
+    )
+  }
+}
+
+Checkbox.propTypes = {
+  value: PropTypes.any,
+  title: PropTypes.string
+}
+
+Checkbox.contextTypes = {
+  checkboxGroup: PropTypes.object
+}
+
+export default Checkbox

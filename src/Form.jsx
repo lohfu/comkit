@@ -1,93 +1,156 @@
-import React, { PropTypes } from 'react';
-import deepEqual from 'deep-equal';
-import { set, merge, bindAll } from 'lowline';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { set, bindAll } from 'lowline'
 
 class Form extends React.Component {
-  constructor(...args) {
-    super(...args);
+  constructor (...args) {
+    super(...args)
 
-    bindAll(this, ['reset', 'registerInput', 'onChange', 'onSubmit']);
+    bindAll(this, ['reset', 'registerField', 'onChange', 'onSubmit'])
 
-    this.inputs = [];
+    this.fields = []
+    this.state = this.getInitialState()
   }
 
-  getChildContext() {
+  getInitialState (props = this.props) {
     return {
-      registerInput: this.registerInput,
-      onChange: this.onChange,
-    };
+      dirty: [],
+      errors: []
+    }
   }
 
-  registerInput(component) {
-    this.inputs.push(component);
+  getChildContext () {
+    return {
+      registerField: this.registerField,
+      onChange: this.onChange
+    }
+  }
+
+  componentDidUpdate (prevProps) {
+    if (prevProps.values !== this.props.values) {
+      this.reset()
+    }
+  }
+
+  registerField (component) {
+    this.fields.push(component)
 
     return () => {
-      const index = this.inputs.indexOf(component);
+      const index = this.fields.indexOf(component)
 
-      this.inputs.splice(index, 1);
-    };
+      this.fields.splice(index, 1)
+    }
   }
 
-  isDirty() {
-    return this.inputs.some((input) => input.isDirty());
+  onChange ({ dirty, error, name, value }) {
+    const state = {}
+
+    const wasPreviouslyDirty = this.state.dirty.includes(name)
+
+    if (!dirty) {
+      if (wasPreviouslyDirty) {
+        state.dirty = this.state.dirty.filter((n) => n !== name)
+      }
+    } else if (!wasPreviouslyDirty) {
+      state.dirty = this.state.dirty.concat(name)
+    }
+
+    const previousError = this.state.errors.find((arr) => arr[0] === name)
+
+    if (!error) {
+      if (previousError) {
+        state.errors = this.state.errors.filter((arr) => arr[0] !== name)
+      }
+    } else if (!previousError) {
+      state.errors = this.state.errors.concat([[name, error]])
+    } else if (previousError && previousError[1] !== error) {
+      state.errors = this.state.errors.filter((arr) => arr[0] !== name).concat([[name, error]])
+    }
+
+    this.setState(state)
   }
 
-  isValid() {
-    return this.inputs.every((input) => input.isValid());
+  isDirty () {
+    return this.state.dirty.length !== 0
   }
 
-  validate(focus = false, touch = false) {
-    return this.inputs.reduce((result, input) => {
-      const isValid = input.isValid(true);
+  isValid () {
+    return this.state.errors.length === 0
+  }
+
+  validate (focus = false, touch = false) {
+    const errors = this.fields.reduce((result, field) => {
+      const error = field.validate()
+
+      field.setState({ error })
 
       // focus first invalid element
-      if (focus && result && !isValid) {
-        input.focus();
+      if (focus && result.length === 0 && error) {
+        field.focus()
       }
 
       // only touch invalid or filled elements when validating
       if (touch) {
-        if (!isValid || input.getValue() != null) {
-          input.touch();
+        if (error || field.getValue() != null) {
+          field.touch()
         } else {
-          input.untouch();
+          field.untouch()
         }
       }
 
-      return result && isValid;
-    }, true);
-  }
-
-  toJSON() {
-    return merge(this.props.attributes, this.inputs.reduce((json, input) => {
-      const value = input.getValue();
-
-      if (value != null) {
-        set(json, input.name, value);
+      if (error) {
+        result.push([field.name, error])
       }
 
-      return json;
-    }, {}));
+      return result
+    }, [])
+
+    this.setState({ errors })
+
+    return errors.length === 0
   }
 
-  reset() {
-    this.inputs.forEach((input) => {
-      input.reset(true);
-    });
+  toJSON () {
+    // TODO implement returning only changed values
+    // ie compare with props.values
+    return this.fields.reduce((json, field) => {
+      const value = field.getValue()
+
+      if (value != null) {
+        set(json, field.name, value)
+      }
+
+      return json
+    }, {})
   }
 
-  render() {
-    const { children } = this.props;
+  reset () {
+    this.fields.forEach((field) => field.reset(true))
+
+    this.setState(this.getInitialState())
+  }
+
+  render () {
+    const { children } = this.props
 
     return (
       <form>{children}</form>
-    );
+    )
   }
 }
 
-Form.childContextTypes = {
-  registerInput: PropTypes.func,
-  onChange: PropTypes.func,
-};
+Form.propTypes = {
+  children: PropTypes.arrayOf(PropTypes.element),
+  values: PropTypes.object
+}
 
-export default Form;
+Form.defaultProps = {
+  values: {}
+}
+
+Form.childContextTypes = {
+  registerField: PropTypes.func,
+  onChange: PropTypes.func
+}
+
+export default Form

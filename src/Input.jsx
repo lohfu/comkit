@@ -1,14 +1,13 @@
-import React, { PropTypes } from 'react';
+import React from 'react'
+import PropTypes from 'prop-types'
+import classNames from 'classnames'
 
-import classNames from 'classnames';
-import { omit } from 'lowline';
+import FormField from './FormField'
 
-import FormElement from './FormElement';
-
-export default class Input extends FormElement {
-  render() {
-    const { required, type = 'text', disabled, placeholder } = this.props;
-    const state = this.state;
+class Input extends FormField {
+  render () {
+    const { type = 'text', disabled, placeholder } = this.props
+    const state = this.state
 
     const classes = Object.assign({
       'field-container': true,
@@ -19,12 +18,12 @@ export default class Input extends FormElement {
       focus: state.focus,
       invalid: !!state.error,
       touched: state.touched,
-      valid: !state.error,
-    });
+      valid: !state.error
+    })
 
     return (
       <div className={classNames(classes)}>
-        <label className="placeholder">{placeholder}</label>
+        <label className='placeholder'>{placeholder}</label>
         <input
           name={this.props.name}
           disabled={disabled}
@@ -32,13 +31,21 @@ export default class Input extends FormElement {
           onChange={this.onChange}
           onFocus={this.onFocus}
           placeholder={placeholder}
-          ref={(input) => { this.input = input; }}
+          ref={(input) => { this.input = input }}
           type={type}
           value={state.value || ''}
         />
-        <label className="icon" />
-        {state.error && <label className="error">{state.error}</label>}
+        <label className='icon' />
+        {state.error && <label className='error'>{state.error}</label>}
       </div>
-    );
+    )
   }
 }
+
+Input.propTypes = {
+  disabled: PropTypes.bool,
+  name: PropTypes.string,
+  placeholder: PropTypes.string
+}
+
+export default Input
