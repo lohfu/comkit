@@ -18,7 +18,7 @@ class Input extends FormField {
       focus: state.focus,
       invalid: !!state.error,
       touched: state.touched,
-      valid: !state.error
+      valid: !state.error,
     })
 
     return (
@@ -45,7 +45,7 @@ class Input extends FormField {
 Input.propTypes = {
   disabled: PropTypes.bool,
   name: PropTypes.string,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
 }
 
 export default Input

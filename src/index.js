@@ -17,7 +17,7 @@ export default {
   Message,
   Pagination,
   SingleCheckbox,
-  TextArea
+  TextArea,
 }
 
 export {
@@ -29,5 +29,5 @@ export {
   Message,
   Pagination,
   SingleCheckbox,
-  TextArea
+  TextArea,
 }

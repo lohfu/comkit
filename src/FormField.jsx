@@ -19,7 +19,7 @@ class FormField extends React.Component {
       dirty: false,
       value: props.value,
       touched: false,
-      error: this.validate(props.value)
+      error: this.validate(props.value),
     }
   }
 
@@ -38,7 +38,7 @@ class FormField extends React.Component {
   onBlur (e) {
     this.setState({
       focus: false,
-      touched: true
+      touched: true,
     })
 
     this.setValue(e.target.value)
@@ -54,7 +54,7 @@ class FormField extends React.Component {
 
   onFocus () {
     this.setState({
-      focus: true
+      focus: true,
     })
   }
 
@@ -64,13 +64,13 @@ class FormField extends React.Component {
 
   touch () {
     this.setState({
-      touched: true
+      touched: true,
     })
   }
 
   untouch () {
     this.setState({
-      touched: false
+      touched: false,
     })
   }
 
@@ -108,7 +108,7 @@ class FormField extends React.Component {
       error: this.validate(value),
       // error: !reset ? this.validate(value) : undefined,
       touched: !reset,
-      value
+      value,
     }
 
     this.setState(state)
@@ -150,16 +150,16 @@ FormField.propTypes = {
   value: PropTypes.any,
   required: PropTypes.bool,
   tests: PropTypes.array,
-  name: PropTypes.string
+  name: PropTypes.string,
 }
 
 FormField.defaultProps = {
-  value: null
+  value: null,
 }
 
 FormField.contextTypes = {
   registerField: PropTypes.func,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
 }
 
 export default FormField

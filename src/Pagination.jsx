@@ -83,7 +83,7 @@ const Pagination = ({ totalCount, query, perPage }) => {
 Pagination.propTypes = {
   totalCount: PropTypes.number,
   perPage: PropTypes.number,
-  query: PropTypes.object
+  query: PropTypes.object,
 }
 
 export default Pagination

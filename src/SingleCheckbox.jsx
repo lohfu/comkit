@@ -4,6 +4,27 @@ import classNames from 'classnames'
 import FormField from './FormField'
 
 export default class SingleCheckbox extends FormField {
+  onBlur (e) {
+    this.setState({
+      focus: false,
+      touched: true,
+    })
+
+    this.setValue(e.target.checked)
+  }
+
+  onChange (e) {
+    e.preventDefault()
+
+    if (document.activeElement !== e.target && !e.target.value) return
+
+    this.setValue(e.target.checked)
+  }
+
+  getValue () {
+    return this.state.value
+  }
+
   render () {
     const { name, disabled, title } = this.props
     const state = this.state
@@ -16,7 +37,7 @@ export default class SingleCheckbox extends FormField {
       focus: state.focus,
       invalid: state.error,
       touched: state.touched,
-      valid: state.value && !state.error
+      valid: state.value && !state.error,
     })
 
     return (
@@ -24,10 +45,9 @@ export default class SingleCheckbox extends FormField {
         <label className='checkbox'>
           <input
             name={name}
+            checked={!!state.value}
             disabled={disabled}
-            onBlur={this.onBlur}
             onChange={this.onChange}
-            onFocus={this.onFocus}
             ref={(input) => { this.input = input }}
             type='checkbox'
           />

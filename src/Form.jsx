@@ -15,14 +15,14 @@ class Form extends React.Component {
   getInitialState (props = this.props) {
     return {
       dirty: [],
-      errors: []
+      errors: [],
     }
   }
 
   getChildContext () {
     return {
       registerField: this.registerField,
-      onChange: this.onChange
+      onChange: this.onChange,
     }
   }
 
@@ -113,7 +113,7 @@ class Form extends React.Component {
   toJSON () {
     // TODO implement returning only changed values
     // ie compare with props.values
-    return this.fields.reduce((json, field) => {
+    const fields = this.fields.reduce((json, field) => {
       const value = field.getValue()
 
       if (value != null) {
@@ -122,6 +122,8 @@ class Form extends React.Component {
 
       return json
     }, {})
+
+    return Object.assign({}, this.props.values, fields)
   }
 
   reset () {
@@ -141,16 +143,16 @@ class Form extends React.Component {
 
 Form.propTypes = {
   children: PropTypes.arrayOf(PropTypes.element),
-  values: PropTypes.object
+  values: PropTypes.object,
 }
 
 Form.defaultProps = {
-  values: {}
+  values: {},
 }
 
 Form.childContextTypes = {
   registerField: PropTypes.func,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
 }
 
 export default Form

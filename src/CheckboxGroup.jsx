@@ -69,18 +69,19 @@ class CheckboxGroup extends FormField {
         value: this.state.value,
         idAttribute: this.props.idAttribute,
         name: this.props.name,
-        onChange: this.onChange
-      }
+        onChange: this.onChange,
+      },
     }
   }
 
   render () {
-    console.log('render checkbox group')
+    // console.log('render checkbox group')
     // const { type = 'text', disabled, children, placeholder, values, value, idProp, nameProp } = this.props
-    const { children, value } = this.props
+    // const { children, value } = this.props
+    const { children } = this.props
     const state = this.state
-    console.log('value: ', value)
-    console.log('this.state.value: ', this.state.value)
+    // console.log('value: ', value)
+    // console.log('this.state.value: ', this.state.value)
 
     const classes = Object.assign({
       'field-container': true,
@@ -89,7 +90,7 @@ class CheckboxGroup extends FormField {
       filled: state.value,
       invalid: state.error,
       touched: state.touched,
-      valid: state.value && !state.error
+      valid: state.value && !state.error,
     })
 
     return (
@@ -108,11 +109,11 @@ CheckboxGroup.propTypes = {
   placeholder: PropTypes.string,
   idProp: PropTypes.string,
   value: PropTypes.any,
-  title: PropTypes.string
+  title: PropTypes.string,
 }
 
 CheckboxGroup.childContextTypes = {
-  checkboxGroup: React.PropTypes.object
+  checkboxGroup: PropTypes.object,
 }
 
 export default CheckboxGroup

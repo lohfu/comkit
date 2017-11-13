@@ -9,7 +9,7 @@ class Checkbox extends React.Component {
   }
 
   render () {
-    console.log('render check box')
+    // console.log('render check box')
     let { onChange, idAttribute, name, value } = this.context.checkboxGroup
 
     if (idAttribute && value) {
@@ -17,7 +17,7 @@ class Checkbox extends React.Component {
     }
 
     const checked = !!value && value.includes(this.props.value)
-    console.log(`${this.props.value}: ${checked}`)
+    // console.log(`${this.props.value}: ${checked}`)
 
     return (
       <label className='checkbox'>
@@ -35,11 +35,11 @@ class Checkbox extends React.Component {
 
 Checkbox.propTypes = {
   value: PropTypes.any,
-  title: PropTypes.string
+  title: PropTypes.string,
 }
 
 Checkbox.contextTypes = {
-  checkboxGroup: PropTypes.object
+  checkboxGroup: PropTypes.object,
 }
 
 export default Checkbox

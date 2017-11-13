@@ -9,7 +9,7 @@ class TextArea extends FormField {
   onFocus (e) {
     this.setState({
       focus: true,
-      touched: true
+      touched: true,
     })
   }
 
@@ -26,7 +26,7 @@ class TextArea extends FormField {
       focus: state.focus,
       invalid: !!state.error,
       touched: state.touched,
-      valid: !state.error
+      valid: !state.error,
     }
 
     return (
@@ -52,7 +52,7 @@ class TextArea extends FormField {
 TextArea.propTypes = {
   disabled: PropTypes.bool,
   name: PropTypes.string,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
 }
 
 export default TextArea
