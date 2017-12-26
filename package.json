@@ -1,14 +1,19 @@
 {
   "name": "comkit",
   "version": "0.3.0-alpha.2",
-  "description": "Collection of Preact components",
+  "description": "Collection of React components",
   "main": "node/index.js",
-  "module": "src/index.js",
-  "jsnext:main": "src/index.js",
+  "module": "es/index.js",
+  "jsnext:main": "es/index.js",
+  "browser": {
+    "node/index.js": "cjs/index.js"
+  },
   "scripts": {
-    "clean": "rimraf es node",
-    "lint": "eslint src/ --ext .jsx --ext .js",
-    "build": "npm run build:node",
+    "clean": "rimraf cjs es node",
+    "lint": "eslint src",
+    "build": "npm run build:cjs && npm run build:es && npm run build:node",
+    "build:cjs": "BABEL_ENV=cjs babel src --out-dir cjs",
+    "build:es": "BABEL_ENV=es babel src --out-dir es",
     "build:node": "BABEL_ENV=node babel src --out-dir node",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "npm run clean && npm run lint && npm run build",
@@ -19,7 +24,7 @@
     "url": "git+https://github.com/lohfu/comkit.git"
   },
   "keywords": [
-    "Preact",
+    "React",
     "components",
     "jsx"
   ],
@@ -38,15 +43,12 @@
     "react": "^15.5.4"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-plugin-module-resolver": "^2.7.1",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.5",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-es2015-node6": "^0.4.0",
-    "babel-preset-es2016": "^6.24.1",
-    "babel-preset-es2017": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
+    "@babel/cli": "^7.0.0-beta.36",
+    "@babel/core": "^7.0.0-beta.36",
+    "@babel/plugin-transform-react-jsx": "^7.0.0-beta.36",
+    "@babel/preset-env": "^7.0.0-beta.36",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-module-resolver": "^3.0.0",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-config-standard-react": "^5.0.0",
